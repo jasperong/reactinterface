@@ -1,5 +1,8 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
+var _ = require('lodash');
+
+var AptList = require('./AptList');
 
 var MainInterface = React.createClass({
   getInitialState: function() {
@@ -21,26 +24,23 @@ var MainInterface = React.createClass({
     this.serverRequest.abort();
   },
 
+  deleteMessage: function(item) {
+    var allApts = this.state.myAppointments;
+    var newApts = _.without(allApts, item);
+    this.setState({
+      myAppointments: newApts
+    });
+  },
+
   render: function() {
     var filteredApts = this.state.myAppointments;
 
     filteredApts = filteredApts.map(function(item, i) {
       return (
-        <li className='pet-item media' key={i}>
-          <div className='pet-info media-body'>
-            <div className='pet-head'>
-              <span className='pet-name'>{this.state.myAppointments[i].petName}</span>
-              <span className='apt-date pull-right'>{this.state.myAppointments[i].aptDate}</span>
-            </div>
-            <div className='owner-name'>
-              <span className='label-item'>Owner: </span>
-              {this.state.myAppointments[i].ownerName}
-            </div>
-            <div className='apt-notes'>
-              {this.state.myAppointments[i].aptNotes}
-            </div>
-          </div>
-        </li>
+        <AptList key={i}
+                singleItem={item}
+                whichItem={item}
+                onDelete={this.deleteMessage} />
       )
     }.bind(this));
 
