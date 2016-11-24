@@ -8,7 +8,8 @@ var AddAppointment = require('./AddAppointment')
 var MainInterface = React.createClass({
   getInitialState: function() {
     return {
-      myAppointments: []
+      myAppointments: [],
+      aptBodyVisible: false
     }
   },
 
@@ -33,6 +34,11 @@ var MainInterface = React.createClass({
     });
   },
 
+  toggleAddDisplay: function() {
+    var tempVisibility = !this.state.aptBodyVisible;
+    this.setState({aptBodyVisible: tempVisibility});
+  },
+
   render: function() {
     var filteredApts = this.state.myAppointments;
 
@@ -47,7 +53,7 @@ var MainInterface = React.createClass({
 
     return (
       <div className='interface'>
-        <AddAppointment />
+        <AddAppointment bodyVisible={this.state.aptBodyVisible} handleToggle={this.toggleAddDisplay} />
         <ul className='item-list media-list'>
           {filteredApts}
         </ul>
